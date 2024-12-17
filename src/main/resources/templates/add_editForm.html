@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title th:text="${event?.id == null ? 'Add New Event' : 'Edit Event'}">Event Form</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 th:text="${event?.id == null ? 'Add a New Event' : 'Edit Event'}"></h1>
+</header>
+<main>
+
+    <form th:action="@{${event?.id == null ? '/events/add' : '/events/edit/' + event.id}}" method="post">
+
+        <label for="name">Event Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter event name" th:value="${event?.name}" required><br><br>
+
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" placeholder="Enter event description" required th:text="${event?.description}"></textarea><br><br>
+
+
+        <label for="popularityScore">Rating:</label>
+        <input type="number" id="popularityScore" name="popularityScore" min="0" max="5" step="0.1" placeholder="Enter rating" th:value="${event?.popularityScore}" required><br><br>
+
+
+        <label for="location">Location:</label>
+
+        <select id="location" name="locationId" required>
+            <option value="" disabled selected>Select a location</option>
+            <option th:each="location : ${locations}"
+                    th:value="${location.id}"
+                    th:text="${location.name}"
+                    th:selected="${event?.location?.id == location.id}"></option>
+        </select><br><br>
+
+
+        <input type="submit" th:value="${event?.id != null ? 'Save Changes' : 'Save Event'}"><br><br>
+    </form>
+
+    <a href="/events">Back to Events</a>
+</main>
+</body>
+</html>
